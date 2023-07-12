@@ -17,7 +17,7 @@ const createIncident = async (req, res) => {
         city: req.body.city,
         country: req.body.country,
         incident_desc: req.body.incident_desc,
-        date: req.body.date,
+        date: Date.now(),
         weather_report: response.data,
       };
 
@@ -25,7 +25,7 @@ const createIncident = async (req, res) => {
 
       res.status(200).json(incidence);
     })
-    .catch(err);
+    .catch(console.log("something went wrong"));
 };
 
 const searchByCountry = async (req, res) => {
