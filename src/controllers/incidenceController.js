@@ -1,12 +1,11 @@
 import sequelize from "../models";
 import axios from "axios";
-import { Op } from "sequelize";
 
 const welcome = (res) => {
   res.send("welcome to the enyata test!");
 };
 
-const createIncident = async (req, res, next) => {
+const createIncident = async (req, res) => {
   await axios
     .get(
       "https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=" +
@@ -24,15 +23,15 @@ const createIncident = async (req, res, next) => {
 
       const incidence = await sequelize.models.incidence.create(params);
 
-      res.json(incidence);
+      res.status(200).json(incidence);
     })
-    .catch();
+    .catch(err);
 };
 
 const searchByCountry = async (req, res) => {
   let incidence = await sequelize.models.incidence.findAll({
     where: {
-      country: req.params.id,
+      country: req.body.country,
     },
   });
   res.json(incidence);
@@ -96,7 +95,7 @@ const getAllIncidences = async (req, res) => {
     }
   });
 
-  res.json(response.length == 0 ? incidence : response);
+  res.status(200).json(response.length == 0 ? incidence : response);
 };
 
 export default {
